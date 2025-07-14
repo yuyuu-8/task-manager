@@ -1,8 +1,15 @@
-import { FC, useState } from 'react';
-import styled from 'styled-components';
-import { Select, SelectOption, T } from '@admiral-ds/react-ui';
-import { Task, TaskStatus, TaskCategory, TaskPriority } from '../../types/task';
-import { TaskItem } from '../TaskItem';
+import { useState } from "react";
+import type { FC } from "react";
+import styled from "styled-components";
+import { T } from "@admiral-ds/react-ui";
+import type {
+  Task,
+  TaskStatus,
+  TaskCategory,
+  TaskPriority,
+} from "../../types/task";
+import { FilterSelect } from "../FilterSelect";
+import { TaskItem } from "../TaskItem";
 
 const Container = styled.div`
   display: flex;
@@ -28,7 +35,7 @@ const NoTasks = styled.div`
   justify-content: center;
   align-items: center;
   padding: 48px;
-  background: var(--admiral-color-Special_ElevatedBG, #FFFFFF);
+  background: var(--admiral-color-Special_ElevatedBG, #ffffff);
   border-radius: 4px;
 `;
 
@@ -36,33 +43,33 @@ interface TaskListProps {
   tasks: Task[];
 }
 
-const statusOptions: SelectOption[] = [
-  { value: '', label: 'All Statuses' },
-  { value: 'To Do', label: 'To Do' },
-  { value: 'In Progress', label: 'In Progress' },
-  { value: 'Done', label: 'Done' },
+const statusOptions = [
+  { value: "", label: "All Statuses" },
+  { value: "To Do", label: "To Do" },
+  { value: "In Progress", label: "In Progress" },
+  { value: "Done", label: "Done" },
 ];
 
-const categoryOptions: SelectOption[] = [
-  { value: '', label: 'All Categories' },
-  { value: 'Bug', label: 'Bug' },
-  { value: 'Feature', label: 'Feature' },
-  { value: 'Documentation', label: 'Documentation' },
-  { value: 'Refactor', label: 'Refactor' },
-  { value: 'Test', label: 'Test' },
+const categoryOptions = [
+  { value: "", label: "All Categories" },
+  { value: "Bug", label: "Bug" },
+  { value: "Feature", label: "Feature" },
+  { value: "Documentation", label: "Documentation" },
+  { value: "Refactor", label: "Refactor" },
+  { value: "Test", label: "Test" },
 ];
 
-const priorityOptions: SelectOption[] = [
-  { value: '', label: 'All Priorities' },
-  { value: 'High', label: 'High' },
-  { value: 'Medium', label: 'Medium' },
-  { value: 'Low', label: 'Low' },
+const priorityOptions = [
+  { value: "", label: "All Priorities" },
+  { value: "High", label: "High" },
+  { value: "Medium", label: "Medium" },
+  { value: "Low", label: "Low" },
 ];
 
 export const TaskList: FC<TaskListProps> = ({ tasks }) => {
-  const [statusFilter, setStatusFilter] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [priorityFilter, setPriorityFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState("");
 
   const filteredTasks = tasks.filter((task) => {
     const matchesStatus = !statusFilter || task.status === statusFilter;
@@ -74,32 +81,23 @@ export const TaskList: FC<TaskListProps> = ({ tasks }) => {
   return (
     <Container>
       <FiltersContainer>
-        <Select
-          mode="select"
+        <FilterSelect
           label="Status"
           value={statusFilter}
           options={statusOptions}
           onChange={(value) => setStatusFilter(value as TaskStatus)}
-          dimension="m"
-          style={{ width: '200px' }}
         />
-        <Select
-          mode="select"
+        <FilterSelect
           label="Category"
           value={categoryFilter}
           options={categoryOptions}
           onChange={(value) => setCategoryFilter(value as TaskCategory)}
-          dimension="m"
-          style={{ width: '200px' }}
         />
-        <Select
-          mode="select"
+        <FilterSelect
           label="Priority"
           value={priorityFilter}
           options={priorityOptions}
           onChange={(value) => setPriorityFilter(value as TaskPriority)}
-          dimension="m"
-          style={{ width: '200px' }}
         />
       </FiltersContainer>
 

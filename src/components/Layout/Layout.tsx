@@ -1,7 +1,7 @@
-import { FC, PropsWithChildren } from 'react';
-import styled from 'styled-components';
-import { Header } from './Header';
-import { T } from '@admiral-ds/react-ui';
+import type { FC, PropsWithChildren } from "react";
+import styled from "styled-components";
+import { Header } from "./Header";
+import { T } from "@admiral-ds/react-ui";
 
 const LayoutContainer = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ const LayoutContainer = styled.div`
 const Main = styled.main`
   flex: 1;
   padding: 24px;
-  background-color: var(--admiral-color-Background_Secondary, #FFFFFF);
+  background-color: var(--admiral-color-Background_Secondary, #ffffff);
 `;
 
 const PageTitle = styled(T)`

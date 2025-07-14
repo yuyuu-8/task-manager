@@ -1,6 +1,6 @@
-import { FC } from 'react';
-import { useParams } from 'react-router-dom';
-import { Layout } from '../components/Layout';
+import type { FC } from "react";
+import { useParams } from "react-router-dom";
+import { Layout } from "../components/Layout";
 
 export const TaskDetailsPage: FC = () => {
   const { id } = useParams();

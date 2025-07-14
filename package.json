@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@admiral-ds/flags": "^3.1.1",
+    "@admiral-ds/fonts": "^2.0.0",
     "@admiral-ds/icons": "^4.3.9",
     "@admiral-ds/react-ui": "^8.52.2",
     "@types/styled-components": "^5.1.34",

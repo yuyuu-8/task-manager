@@ -1,12 +1,22 @@
-import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { Card, T, Tag, Button } from '@admiral-ds/react-ui';
-import { EditOutline } from '@admiral-ds/icons';
-import { Task } from '../../types/task';
+import type { FC } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { Button } from "@admiral-ds/react-ui";
+import { CustomTag } from "../CustomTag";
+import type { Task } from "../../types/task";
+
+const Card = styled.div`
+  background: var(--admiral-color-Special_ElevatedBG, #ffffff);
+  border-radius: 4px;
+  box-shadow: var(
+    --admiral-box-shadow-Shadow08,
+    0px 3.2px 9px rgba(0, 0, 0, 0.12)
+  );
+`;
 
 const StyledCard = styled(Card)`
   width: 100%;
+  max-width: 400px;
   cursor: pointer;
   transition: transform 0.2s ease;
 
@@ -16,45 +26,82 @@ const StyledCard = styled(Card)`
 `;
 
 const CardContent = styled.div`
-  padding: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;
 
 const TagsContainer = styled.div`
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 12px;
+  margin: 0;
+  min-height: 32px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 16px;
+  margin: 8px 0 0;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 76px;
+`;
+
+const Title = styled.h3`
+  font-family: "VTB Group UI";
+  font-size: 20px;
+  font-weight: 550;
+  line-height: 24px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--admiral-color-Neutral_Neutral90, #23262d);
+`;
+
+const Description = styled.p`
+  font-family: "VTB Group UI";
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--admiral-color-Neutral_Neutral50, #717681);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 40px;
 `;
 
 interface TaskItemProps {
   task: Task;
 }
 
-const getPriorityColor = (priority: Task['priority']) => {
+const getPriorityColor = (priority: Task["priority"]) => {
   switch (priority) {
-    case 'High':
-      return 'error';
-    case 'Medium':
-      return 'warning';
-    case 'Low':
-      return 'success';
+    case "High":
+      return "error";
+    case "Medium":
+      return "warning";
+    case "Low":
+      return "success";
   }
 };
 
-const getStatusColor = (status: Task['status']) => {
+const getStatusColor = (status: Task["status"]) => {
   switch (status) {
-    case 'Done':
-      return 'success';
-    case 'In Progress':
-      return 'warning';
-    case 'To Do':
-      return 'error';
+    case "Done":
+      return "success";
+    case "In Progress":
+      return "warning";
+    case "To Do":
+      return "error";
   }
 };
 
@@ -73,28 +120,21 @@ export const TaskItem: FC<TaskItemProps> = ({ task }) => {
   return (
     <StyledCard onClick={handleCardClick}>
       <CardContent>
-        <T font="Main/L" as="h3">
-          {task.title}
-        </T>
-        {task.description && (
-          <T font="Main/M" as="p" style={{ marginTop: 8, color: 'var(--admiral-color-Neutral_Neutral50, #717681)' }}>
-            {task.description}
-          </T>
-        )}
+        <ContentContainer>
+          <Title>{task.title}</Title>
+          {task.description && <Description>{task.description}</Description>}
+        </ContentContainer>
         <TagsContainer>
-          <Tag appearance="filled" dimension="m">
-            {task.category}
-          </Tag>
-          <Tag appearance={getStatusColor(task.status)} dimension="m">
+          <CustomTag variant="primary">{task.category}</CustomTag>
+          <CustomTag variant={getStatusColor(task.status)}>
             {task.status}
-          </Tag>
-          <Tag appearance={getPriorityColor(task.priority)} dimension="m">
+          </CustomTag>
+          <CustomTag variant={getPriorityColor(task.priority)}>
             {task.priority}
-          </Tag>
+          </CustomTag>
         </TagsContainer>
         <ButtonContainer>
           <Button dimension="m" appearance="secondary" onClick={handleEdit}>
-            <EditOutline width={24} height={24} />
             Edit
           </Button>
         </ButtonContainer>

@@ -1,14 +1,14 @@
-import { FC } from 'react';
-import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
-import { T } from '@admiral-ds/react-ui';
+import type { FC } from "react";
+import styled from "styled-components";
+import { Link, useLocation } from "react-router-dom";
+import { T } from "@admiral-ds/react-ui";
 
 const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   padding: 16px 24px;
-  background-color: var(--admiral-color-Primary_Primary60, #0062FF);
-  color: var(--admiral-color-Special_StaticWhite, #FFFFFF);
+  background-color: var(--admiral-color-Primary_Primary60, #0062ff);
+  color: var(--admiral-color-Special_StaticWhite, #ffffff);
 `;
 
 const Logo = styled(Link)`
@@ -42,7 +42,7 @@ export const Header: FC = () => {
         <T font="Main/XL">Task Manager</T>
       </Logo>
       <Nav>
-        <NavLink to="/" $active={location.pathname === '/'}>
+        <NavLink to="/" $active={location.pathname === "/"}>
           <T font="Main/M">Tasks</T>
         </NavLink>
       </Nav>

@@ -1,2 +1,2 @@
-export * from './TasksPage';
-export * from './TaskDetailsPage';
+export * from "./TasksPage";
+export * from "./TaskDetailsPage";
