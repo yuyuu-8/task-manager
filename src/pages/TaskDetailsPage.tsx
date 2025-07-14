@@ -1,13 +1,207 @@
+import { useState, useEffect } from "react";
 import type { FC } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
+import { TextField, T } from "@admiral-ds/react-ui";
+import { Button } from "@admiral-ds/react-ui";
 import { Layout } from "../components/Layout";
+import { FilterSelect } from "../components/FilterSelect";
+import { useTaskContext } from "../context";
+import type { Task } from "../types/task";
+
+const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--admiral-color-Special_ElevatedBG, #ffffff);
+  border-radius: 8px;
+  box-shadow: var(
+    --admiral-box-shadow-Shadow08,
+    0px 3.2px 9px rgba(0, 0, 0, 0.12)
+  );
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 24px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 8px;
+  }
+`;
+
+const Field = styled.div`
+  margin-bottom: 24px;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+  }
+`;
+
+const ErrorMessage = styled(T)`
+  color: var(--admiral-color-Error_Error60, #d92020);
+`;
+
+const statusOptions = [
+  { value: "To Do", label: "To do" },
+  { value: "In Progress", label: "In progress" },
+  { value: "Done", label: "Done" },
+];
+
+const categoryOptions = [
+  { value: "Bug", label: "Bug" },
+  { value: "Feature", label: "Feature" },
+  { value: "Documentation", label: "Documentation" },
+  { value: "Refactor", label: "Refactor" },
+  { value: "Test", label: "Test" },
+];
+
+const priorityOptions = [
+  { value: "High", label: "High" },
+  { value: "Medium", label: "Medium" },
+  { value: "Low", label: "Low" },
+];
 
 export const TaskDetailsPage: FC = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { getTask, updateTask } = useTaskContext();
+  const [error, setError] = useState<string>("");
+
+  const [formData, setFormData] = useState<Task>({
+    id: "",
+    title: "",
+    description: "",
+    category: "Feature",
+    status: "To Do",
+    priority: "Medium",
+  });
+
+  useEffect(() => {
+    if (id) {
+      const task = getTask(id);
+      if (task) {
+        setFormData(task);
+      } else {
+        setError("Task not found");
+      }
+    }
+  }, [id, getTask]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.title.trim()) {
+      setError("Title is required");
+      return;
+    }
+
+    updateTask(formData);
+    navigate("/");
+  };
 
   return (
-    <Layout title="Task Details">
-      <div>Task details for ID: {id} will be implemented soon</div>
+    <Layout title={id ? "Edit task" : "New task"}>
+      <FormContainer>
+        <form onSubmit={handleSubmit}>
+          <Field>
+            <TextField
+              dimension="m"
+              label="Title"
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
+              required
+              style={{ width: "100%" }}
+            />
+          </Field>
+
+          <Field>
+            <TextField
+              dimension="m"
+              label="Description"
+              value={formData.description || ""}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+              style={{ width: "100%" }}
+              rows={3}
+            />
+          </Field>
+
+          <Field>
+            <FilterSelect
+              label="Category"
+              value={formData.category}
+              options={categoryOptions}
+              onChange={(value) =>
+                setFormData({
+                  ...formData,
+                  category: value as Task["category"],
+                })
+              }
+            />
+          </Field>
+
+          <Field>
+            <FilterSelect
+              label="Status"
+              value={formData.status}
+              options={statusOptions}
+              onChange={(value) =>
+                setFormData({ ...formData, status: value as Task["status"] })
+              }
+            />
+          </Field>
+
+          <Field>
+            <FilterSelect
+              label="Priority"
+              value={formData.priority}
+              options={priorityOptions}
+              onChange={(value) =>
+                setFormData({
+                  ...formData,
+                  priority: value as Task["priority"],
+                })
+              }
+            />
+          </Field>
+
+          {error && (
+            <ErrorMessage font="Main/M" as="p">
+              {error}
+            </ErrorMessage>
+          )}
+
+          <ButtonGroup>
+            <Button
+              dimension="m"
+              appearance="secondary"
+              type="button"
+              onClick={() => navigate("/")}
+            >
+              Dismiss
+            </Button>
+            <Button dimension="m" type="submit">
+              Save
+            </Button>
+          </ButtonGroup>
+        </form>
+      </FormContainer>
     </Layout>
   );
 };

@@ -1,9 +1,8 @@
-import { useState } from "react";
 import type { FC, PropsWithChildren } from "react";
+import { useState } from "react";
 import type { Task } from "../types/task";
 import { TaskContext } from "./taskContext.types";
 
-// Начальные тестовые данные
 const initialTasks: Task[] = [
   {
     id: "1",
@@ -37,7 +36,7 @@ export const TaskProvider: FC<PropsWithChildren> = ({ children }) => {
   const addTask = (task: Omit<Task, "id">) => {
     const newTask: Task = {
       ...task,
-      id: Date.now().toString(), // Простая генерация ID
+      id: Date.now().toString(),
     };
     setTasks((prev) => [...prev, newTask]);
   };

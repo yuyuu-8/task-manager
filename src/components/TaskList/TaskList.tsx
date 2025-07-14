@@ -2,12 +2,7 @@ import { useState } from "react";
 import type { FC } from "react";
 import styled from "styled-components";
 import { T } from "@admiral-ds/react-ui";
-import type {
-  Task,
-  TaskStatus,
-  TaskCategory,
-  TaskPriority,
-} from "../../types/task";
+import type { Task } from "../../types/task";
 import { FilterSelect } from "../FilterSelect";
 import { TaskItem } from "../TaskItem";
 
@@ -15,12 +10,23 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 100%;
 `;
 
 const FiltersContainer = styled.div`
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
+  margin-bottom: 8px;
+
+  @media (max-width: 768px) {
+    gap: 12px;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 8px;
+  }
 `;
 
 const TasksGrid = styled.div`
@@ -28,6 +34,16 @@ const TasksGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
   margin-top: 24px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
 `;
 
 const NoTasks = styled.div`
@@ -37,6 +53,10 @@ const NoTasks = styled.div`
   padding: 48px;
   background: var(--admiral-color-Special_ElevatedBG, #ffffff);
   border-radius: 4px;
+
+  @media (max-width: 768px) {
+    padding: 32px;
+  }
 `;
 
 interface TaskListProps {
@@ -44,23 +64,23 @@ interface TaskListProps {
 }
 
 const statusOptions = [
-  { value: "", label: "All Statuses" },
-  { value: "To Do", label: "To Do" },
-  { value: "In Progress", label: "In Progress" },
+  { value: "", label: "All" },
+  { value: "To Do", label: "To do" },
+  { value: "In Progress", label: "In progress" },
   { value: "Done", label: "Done" },
 ];
 
 const categoryOptions = [
-  { value: "", label: "All Categories" },
+  { value: "", label: "All" },
   { value: "Bug", label: "Bug" },
   { value: "Feature", label: "Feature" },
   { value: "Documentation", label: "Documentation" },
-  { value: "Refactor", label: "Refactor" },
+  { value: "Refactor", label: "Refactoring" },
   { value: "Test", label: "Test" },
 ];
 
 const priorityOptions = [
-  { value: "", label: "All Priorities" },
+  { value: "", label: "All" },
   { value: "High", label: "High" },
   { value: "Medium", label: "Medium" },
   { value: "Low", label: "Low" },
@@ -85,19 +105,19 @@ export const TaskList: FC<TaskListProps> = ({ tasks }) => {
           label="Status"
           value={statusFilter}
           options={statusOptions}
-          onChange={(value) => setStatusFilter(value as TaskStatus)}
+          onChange={setStatusFilter}
         />
         <FilterSelect
           label="Category"
           value={categoryFilter}
           options={categoryOptions}
-          onChange={(value) => setCategoryFilter(value as TaskCategory)}
+          onChange={setCategoryFilter}
         />
         <FilterSelect
           label="Priority"
           value={priorityFilter}
           options={priorityOptions}
-          onChange={(value) => setPriorityFilter(value as TaskPriority)}
+          onChange={setPriorityFilter}
         />
       </FiltersContainer>
 
@@ -110,7 +130,7 @@ export const TaskList: FC<TaskListProps> = ({ tasks }) => {
       ) : (
         <NoTasks>
           <T font="Main/L" as="p">
-            No tasks found
+            Tasks not found
           </T>
         </NoTasks>
       )}

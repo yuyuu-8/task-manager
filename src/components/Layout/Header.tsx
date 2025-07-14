@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import styled from "styled-components";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { T } from "@admiral-ds/react-ui";
 
 const HeaderContainer = styled.header`
@@ -9,43 +9,45 @@ const HeaderContainer = styled.header`
   padding: 16px 24px;
   background-color: var(--admiral-color-Primary_Primary60, #0062ff);
   color: var(--admiral-color-Special_StaticWhite, #ffffff);
+
+  @media (max-width: 768px) {
+    padding: 12px 16px;
+  }
+`;
+
+const HeaderContent = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 const Logo = styled(Link)`
   text-decoration: none;
   color: inherit;
-  margin-right: 48px;
-`;
-
-const Nav = styled.nav`
-  display: flex;
-  gap: 24px;
-`;
-
-const NavLink = styled(Link)<{ $active?: boolean }>`
-  text-decoration: none;
-  color: inherit;
-  opacity: ${({ $active }) => ($active ? 1 : 0.7)};
-  transition: opacity 0.2s ease;
 
   &:hover {
-    opacity: 1;
+    opacity: 0.9;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
   }
 `;
 
 export const Header: FC = () => {
-  const location = useLocation();
-
   return (
     <HeaderContainer>
-      <Logo to="/">
-        <T font="Main/XL">Task Manager</T>
-      </Logo>
-      <Nav>
-        <NavLink to="/" $active={location.pathname === "/"}>
-          <T font="Main/M">Tasks</T>
-        </NavLink>
-      </Nav>
+      <HeaderContent>
+        <Logo to="/">
+          <T font="Main/XL">Task Manager</T>
+        </Logo>
+      </HeaderContent>
     </HeaderContainer>
   );
 };

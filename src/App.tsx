@@ -2,8 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { TasksPage, TaskDetailsPage } from "./pages";
 import { LIGHT_THEME } from "@admiral-ds/react-ui";
-
-import "./App.css";
+import { TaskProvider } from "./context";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -17,12 +16,14 @@ function App() {
   return (
     <ThemeProvider theme={LIGHT_THEME}>
       <GlobalStyle />
-      <Router basename="/task-manager">
-        <Routes>
-          <Route path="/" element={<TasksPage />} />
-          <Route path="/task/:id" element={<TaskDetailsPage />} />
-        </Routes>
-      </Router>
+      <TaskProvider>
+        <Router basename="/task-manager">
+          <Routes>
+            <Route path="/" element={<TasksPage />} />
+            <Route path="/task/:id" element={<TaskDetailsPage />} />
+          </Routes>
+        </Router>
+      </TaskProvider>
     </ThemeProvider>
   );
 }

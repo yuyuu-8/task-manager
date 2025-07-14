@@ -19,6 +19,7 @@ const StyledCard = styled(Card)`
   max-width: 400px;
   cursor: pointer;
   transition: transform 0.2s ease;
+  height: 100%;
 
   &:hover {
     transform: translateY(-2px);
@@ -30,6 +31,7 @@ const CardContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  height: 100%;
 `;
 
 const TagsContainer = styled.div`
@@ -38,19 +40,21 @@ const TagsContainer = styled.div`
   flex-wrap: wrap;
   margin: 0;
   min-height: 32px;
+  width: 100%;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin: 8px 0 0;
+  margin-top: auto;
+  padding-top: 8px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 76px;
+  width: 100%;
 `;
 
 const Title = styled.h3`
@@ -59,10 +63,10 @@ const Title = styled.h3`
   font-weight: 550;
   line-height: 24px;
   margin: 0;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   color: var(--admiral-color-Neutral_Neutral90, #23262d);
+  width: 100%;
 `;
 
 const Description = styled.p`
@@ -76,7 +80,7 @@ const Description = styled.p`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 40px;
+  width: 100%;
 `;
 
 interface TaskItemProps {

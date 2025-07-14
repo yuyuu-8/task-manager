@@ -1,16 +1,42 @@
 import type { FC } from "react";
-import { Select } from "@admiral-ds/react-ui";
 import styled from "styled-components";
 
 const SelectWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 200px;
 `;
 
 const Label = styled.label`
   font-size: 14px;
   color: var(--admiral-color-Neutral_Neutral50, #717681);
+`;
+
+const StyledSelect = styled.select`
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid var(--admiral-color-Neutral_Neutral40, #8a96a8);
+  border-radius: 4px;
+  background-color: var(--admiral-color-Special_ElevatedBG, #ffffff);
+  color: var(--admiral-color-Neutral_Neutral90, #23262d);
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    border-color: var(--admiral-color-Primary_Primary60, #0062ff);
+  }
+
+  &:focus {
+    border-color: var(--admiral-color-Primary_Primary60, #0062ff);
+    box-shadow: 0 0 0 1px var(--admiral-color-Primary_Primary60, #0062ff);
+  }
+
+  option {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
 `;
 
 interface FilterSelectProps {
@@ -29,18 +55,13 @@ export const FilterSelect: FC<FilterSelectProps> = ({
   return (
     <SelectWrapper>
       <Label>{label}</Label>
-      <Select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        dimension="m"
-        style={{ width: "200px" }}
-      >
+      <StyledSelect value={value} onChange={(e) => onChange(e.target.value)}>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
-      </Select>
+      </StyledSelect>
     </SelectWrapper>
   );
 };
