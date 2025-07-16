@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Button } from "@admiral-ds/react-ui";
 import { CustomTag } from "../CustomTag";
+import { useTaskContext } from "../../context";
 import type { Task } from "../../types/task";
 
 const Card = styled.div`
@@ -46,6 +47,7 @@ const TagsContainer = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
   margin-top: auto;
   padding-top: 8px;
 `;
@@ -111,10 +113,18 @@ const getStatusColor = (status: Task["status"]) => {
 
 export const TaskItem: FC<TaskItemProps> = ({ task }) => {
   const navigate = useNavigate();
+  const { deleteTask } = useTaskContext();
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     navigate(`/task/${task.id}`);
+  };
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (window.confirm("Are you sure you want to delete this task?")) {
+      deleteTask(task.id);
+    }
   };
 
   const handleCardClick = () => {
@@ -140,6 +150,9 @@ export const TaskItem: FC<TaskItemProps> = ({ task }) => {
         <ButtonContainer>
           <Button dimension="m" appearance="secondary" onClick={handleEdit}>
             Edit
+          </Button>
+          <Button dimension="m" appearance="primary" onClick={handleDelete}>
+            Delete
           </Button>
         </ButtonContainer>
       </CardContent>

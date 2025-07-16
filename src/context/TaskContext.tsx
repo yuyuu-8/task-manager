@@ -33,7 +33,7 @@ const initialTasks: Task[] = [
 export const TaskProvider: FC<PropsWithChildren> = ({ children }) => {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
 
-  const addTask = (task: Omit<Task, "id">) => {
+  const createTask = (task: Omit<Task, "id">) => {
     const newTask: Task = {
       ...task,
       id: Date.now().toString(),
@@ -57,7 +57,7 @@ export const TaskProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <TaskContext.Provider
-      value={{ tasks, addTask, updateTask, deleteTask, getTask }}
+      value={{ tasks, createTask, updateTask, deleteTask, getTask }}
     >
       {children}
     </TaskContext.Provider>

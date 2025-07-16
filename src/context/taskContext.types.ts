@@ -3,7 +3,7 @@ import type { Task } from "../types/task";
 
 export interface TaskContextType {
   tasks: Task[];
-  addTask: (task: Omit<Task, "id">) => void;
+  createTask: (task: Omit<Task, "id">) => void;
   updateTask: (task: Task) => void;
   deleteTask: (id: string) => void;
   getTask: (id: string) => Task | undefined;

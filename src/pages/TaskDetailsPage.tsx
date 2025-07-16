@@ -77,8 +77,9 @@ const priorityOptions = [
 export const TaskDetailsPage: FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getTask, updateTask } = useTaskContext();
+  const { getTask, updateTask, createTask } = useTaskContext();
   const [error, setError] = useState<string>("");
+  const isNewTask = !id;
 
   const [formData, setFormData] = useState<Task>({
     id: "",
@@ -97,6 +98,16 @@ export const TaskDetailsPage: FC = () => {
       } else {
         setError("Task not found");
       }
+    } else {
+      // Reset form for new task
+      setFormData({
+        id: "",
+        title: "",
+        description: "",
+        category: "Feature",
+        status: "To Do",
+        priority: "Medium",
+      });
     }
   }, [id, getTask]);
 
@@ -108,12 +119,22 @@ export const TaskDetailsPage: FC = () => {
       return;
     }
 
-    updateTask(formData);
+    if (isNewTask) {
+      createTask({
+        title: formData.title,
+        description: formData.description,
+        category: formData.category,
+        status: formData.status,
+        priority: formData.priority,
+      });
+    } else {
+      updateTask(formData);
+    }
     navigate("/");
   };
 
   return (
-    <Layout title={id ? "Edit task" : "New task"}>
+    <Layout title={isNewTask ? "New task" : "Edit task"}>
       <FormContainer>
         <form onSubmit={handleSubmit}>
           <Field>
@@ -194,10 +215,10 @@ export const TaskDetailsPage: FC = () => {
               type="button"
               onClick={() => navigate("/")}
             >
-              Dismiss
+              Cancel
             </Button>
             <Button dimension="m" type="submit">
-              Save
+              {isNewTask ? "Create" : "Save"}
             </Button>
           </ButtonGroup>
         </form>

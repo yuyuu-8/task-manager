@@ -20,6 +20,7 @@ function App() {
         <Router basename="/task-manager">
           <Routes>
             <Route path="/" element={<TasksPage />} />
+            <Route path="/task/new" element={<TaskDetailsPage />} />
             <Route path="/task/:id" element={<TaskDetailsPage />} />
           </Routes>
         </Router>
