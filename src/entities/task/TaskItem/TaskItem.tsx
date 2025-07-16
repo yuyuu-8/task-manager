@@ -86,6 +86,13 @@ const Description = styled.p`
   width: 100%;
 `;
 
+const DateText = styled.span`
+  font-family: "VTB Group UI";
+  font-size: 14px;
+  color: var(--admiral-color-Neutral_Neutral40, #8a96a8);
+  margin-top: 8px;
+`;
+
 interface TaskItemProps {
   task: Task;
 }
@@ -110,6 +117,17 @@ const getStatusColor = (status: Task["status"]) => {
     case "To Do":
       return "error";
   }
+};
+
+const formatDate = (dateString?: string) => {
+  if (!dateString) return "";
+
+  const date = new Date(dateString);
+  return date.toLocaleDateString("ru-RU", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 };
 
 export const TaskItem: FC<TaskItemProps> = ({ task }) => {
@@ -149,6 +167,9 @@ export const TaskItem: FC<TaskItemProps> = ({ task }) => {
         <ContentContainer>
           <Title>{task.title}</Title>
           {task.description && <Description>{task.description}</Description>}
+          {task.createdAt && (
+            <DateText>Created: {formatDate(task.createdAt)}</DateText>
+          )}
         </ContentContainer>
         <TagsContainer>
           <CustomTag variant="primary">{task.category}</CustomTag>

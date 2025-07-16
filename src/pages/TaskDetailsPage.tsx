@@ -89,12 +89,12 @@ export const TaskDetailsPage: FC = () => {
     category: "Feature",
     status: "To Do",
     priority: "Medium",
+    createdAt: undefined,
   });
 
   useEffect(() => {
     if (id) {
       if (loading) {
-        // Clear error while loading
         setError("");
       } else {
         const task = getTask(id);
@@ -103,14 +103,12 @@ export const TaskDetailsPage: FC = () => {
           setFormData(task);
           setError("");
         } else {
-          // Only show error if tasks are loaded but task not found
           if (tasks.length > 0) {
             setError("Task not found");
           }
         }
       }
     } else {
-      // New task
       setFormData({
         id: "",
         title: "",
@@ -118,6 +116,7 @@ export const TaskDetailsPage: FC = () => {
         category: "Feature",
         status: "To Do",
         priority: "Medium",
+        createdAt: undefined,
       });
       setError("");
     }

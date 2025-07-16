@@ -39,10 +39,25 @@ export class SupabaseService {
         return await this.initializeTasks();
       }
 
-      return tasks.map((task: Task & { id: number | string }) => ({
-        ...task,
-        id: task.id.toString(),
-      }));
+      return tasks.map(
+        (task: {
+          id: number | string;
+          title: string;
+          description: string;
+          category: string;
+          status: string;
+          priority: string;
+          created_at: string;
+        }) => ({
+          id: task.id.toString(),
+          title: task.title,
+          description: task.description,
+          category: task.category,
+          status: task.status,
+          priority: task.priority,
+          createdAt: task.created_at,
+        })
+      );
     } catch (error) {
       console.error("Failed to fetch tasks from Supabase:", error);
       throw new Error("Failed to load tasks from server");
@@ -132,6 +147,7 @@ export class SupabaseService {
         category: createdTask.category,
         status: createdTask.status,
         priority: createdTask.priority,
+        createdAt: createdTask.created_at,
       };
     } catch (error) {
       console.error("Failed to create task via Supabase:", error);
@@ -161,6 +177,7 @@ export class SupabaseService {
         category: updatedTask.category,
         status: updatedTask.status,
         priority: updatedTask.priority,
+        createdAt: updatedTask.created_at,
       };
     } catch (error) {
       console.error("Failed to update task via Supabase:", error);
