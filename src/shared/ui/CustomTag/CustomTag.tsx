@@ -6,15 +6,15 @@ interface CustomTagProps {
   variant?: "primary" | "success" | "warning" | "error";
 }
 
-const TagContainer = styled.div<{ variant?: string }>`
+const TagContainer = styled.div<{ $variant?: string }>`
   display: inline-flex;
   align-items: center;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
-  ${({ variant }) => {
-    switch (variant) {
+  ${({ $variant }) => {
+    switch ($variant) {
       case "primary":
         return `
           background-color: var(--admiral-color-Primary_Primary60, #0062FF);
@@ -48,5 +48,5 @@ export const CustomTag: FC<CustomTagProps> = ({
   children,
   variant = "default",
 }) => {
-  return <TagContainer variant={variant}>{children}</TagContainer>;
+  return <TagContainer $variant={variant}>{children}</TagContainer>;
 };

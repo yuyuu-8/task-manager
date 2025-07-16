@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Button } from "@admiral-ds/react-ui";
-import { CustomTag } from "../CustomTag";
-import { useTaskContext } from "../../context";
-import type { Task } from "../../types/task";
+import { CustomTag } from "../../../shared/ui";
+import { useTaskContext } from "../../../shared/context";
+import type { Task } from "../../../shared/types/task";
 
 const Card = styled.div`
   background: var(--admiral-color-Special_ElevatedBG, #ffffff);

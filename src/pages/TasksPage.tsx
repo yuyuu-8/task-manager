@@ -2,11 +2,9 @@ import type { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Button } from "@admiral-ds/react-ui";
-import { Layout } from "../components/Layout";
-import { TaskList } from "../components/TaskList";
-import { LoadingSpinner } from "../components/LoadingSpinner";
-import { ErrorDisplay } from "../components/ErrorDisplay";
-import { useTaskContext } from "../context";
+import { Layout, LoadingSpinner, ErrorDisplay } from "../shared/ui";
+import { TaskList } from "../widgets/task-list";
+import { useTaskContext } from "../shared/context";
 
 const HeaderContainer = styled.div`
   display: flex;

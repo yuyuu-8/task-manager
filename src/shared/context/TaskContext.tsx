@@ -2,14 +2,13 @@ import type { FC, PropsWithChildren } from "react";
 import { useState, useEffect } from "react";
 import type { Task } from "../types/task";
 import { TaskContext } from "./taskContext.types";
-import { ApiService } from "../services/apiService";
+import { ApiService } from "../api/apiService";
 
 export const TaskProvider: FC<PropsWithChildren> = ({ children }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Load tasks from server
   const loadTasks = async () => {
     setLoading(true);
     setError(null);
@@ -24,7 +23,6 @@ export const TaskProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
-  // Load tasks on component initialization
   useEffect(() => {
     loadTasks();
   }, []);
@@ -38,7 +36,7 @@ export const TaskProvider: FC<PropsWithChildren> = ({ children }) => {
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error creating task");
       console.error("Error creating task:", err);
-      throw err; // Re-throw error for UI handling
+      throw err;
     } finally {
       setLoading(false);
     }

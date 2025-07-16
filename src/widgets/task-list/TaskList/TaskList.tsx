@@ -2,9 +2,9 @@ import { useState } from "react";
 import type { FC } from "react";
 import styled from "styled-components";
 import { T } from "@admiral-ds/react-ui";
-import type { Task } from "../../types/task";
+import type { Task } from "../../../shared/types/task";
 import { FilterSelect } from "../FilterSelect";
-import { TaskItem } from "../TaskItem";
+import { TaskItem } from "../../../entities/task";
 
 const Container = styled.div`
   display: flex;

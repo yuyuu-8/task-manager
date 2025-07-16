@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { TasksPage, TaskDetailsPage } from "./pages";
+import { TasksPage, TaskDetailsPage } from "../pages";
 import { LIGHT_THEME } from "@admiral-ds/react-ui";
-import { TaskProvider } from "./context";
-import { ApiInfo } from "./components/ApiInfo";
+import { TaskProvider } from "../shared/context";
+import { ApiInfo } from "../widgets/api-info";
 
 const GlobalStyle = createGlobalStyle`
   body {

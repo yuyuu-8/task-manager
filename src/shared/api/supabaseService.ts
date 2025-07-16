@@ -1,11 +1,8 @@
 import type { Task } from "../types/task";
 
 export class SupabaseService {
-  // Конфигурация из переменных окружения
-  private static baseUrl =
-    import.meta.env.VITE_SUPABASE_URL || "https://your-project.supabase.co";
-  private static apiKey =
-    import.meta.env.VITE_SUPABASE_ANON_KEY || "your_anon_key_here";
+  private static baseUrl = import.meta.env.VITE_SUPABASE_URL;
+  private static apiKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
   private static async makeRequest(
     endpoint: string,
@@ -31,7 +28,6 @@ export class SupabaseService {
     return response;
   }
 
-  // Получение всех задач
   static async getTasks(): Promise<Task[]> {
     try {
       const response = await this.makeRequest(
@@ -39,19 +35,20 @@ export class SupabaseService {
       );
       const tasks = await response.json();
 
-      // Если задач нет, создаем начальные
       if (tasks.length === 0) {
         return await this.initializeTasks();
       }
 
-      return tasks;
+      return tasks.map((task: Task & { id: number | string }) => ({
+        ...task,
+        id: task.id.toString(),
+      }));
     } catch (error) {
       console.error("Failed to fetch tasks from Supabase:", error);
       throw new Error("Failed to load tasks from server");
     }
   }
 
-  // Инициализация начальными задачами
   private static async initializeTasks(): Promise<Task[]> {
     const initialTasks: Omit<Task, "id">[] = [
       {
@@ -112,7 +109,6 @@ export class SupabaseService {
     return createdTasks;
   }
 
-  // Создание новой задачи
   static async createTask(task: Omit<Task, "id">): Promise<Task> {
     try {
       const response = await this.makeRequest("tasks", {
@@ -143,7 +139,6 @@ export class SupabaseService {
     }
   }
 
-  // Обновление задачи
   static async updateTask(task: Task): Promise<Task> {
     try {
       const response = await this.makeRequest(`tasks?id=eq.${task.id}`, {
@@ -173,7 +168,6 @@ export class SupabaseService {
     }
   }
 
-  // Удаление задачи
   static async deleteTask(id: string): Promise<void> {
     try {
       await this.makeRequest(`tasks?id=eq.${id}`, {

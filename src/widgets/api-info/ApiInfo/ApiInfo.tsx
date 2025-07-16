@@ -26,11 +26,11 @@ const ApiInfoContainer = styled.div`
   }
 `;
 
-const StatusDot = styled.div<{ active: boolean }>`
+const StatusDot = styled.div<{ $active: boolean }>`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: ${(props) => (props.active ? "#4CAF50" : "#F44336")};
+  background-color: ${(props) => (props.$active ? "#4CAF50" : "#F44336")};
   display: inline-block;
   margin-right: 8px;
 `;
@@ -49,7 +49,7 @@ export const ApiInfo: FC = () => {
   return (
     <ApiInfoContainer>
       <ApiRow>
-        <StatusDot active={true} />
+        <StatusDot $active={true} />
         <T font="Caption/Caption 1">API: Supabase</T>
       </ApiRow>
       <T font="Caption/Caption 2">Real PostgreSQL database</T>

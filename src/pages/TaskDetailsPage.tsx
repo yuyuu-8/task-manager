@@ -4,10 +4,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { TextField, T } from "@admiral-ds/react-ui";
 import { Button } from "@admiral-ds/react-ui";
-import { Layout } from "../components/Layout";
-import { FilterSelect } from "../components/FilterSelect";
-import { useTaskContext } from "../context";
-import type { Task } from "../types/task";
+import { Layout } from "../shared/ui";
+import { FilterSelect } from "../widgets/task-list";
+import { useTaskContext } from "../shared/context";
+import type { Task } from "../shared/types/task";
 
 const FormContainer = styled.div`
   display: flex;
@@ -77,7 +77,7 @@ const priorityOptions = [
 export const TaskDetailsPage: FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getTask, updateTask, createTask } = useTaskContext();
+  const { tasks, loading, getTask, updateTask, createTask } = useTaskContext();
   const [error, setError] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const isNewTask = !id;
@@ -93,13 +93,24 @@ export const TaskDetailsPage: FC = () => {
 
   useEffect(() => {
     if (id) {
-      const task = getTask(id);
-      if (task) {
-        setFormData(task);
+      if (loading) {
+        // Clear error while loading
+        setError("");
       } else {
-        setError("Task not found");
+        const task = getTask(id);
+
+        if (task) {
+          setFormData(task);
+          setError("");
+        } else {
+          // Only show error if tasks are loaded but task not found
+          if (tasks.length > 0) {
+            setError("Task not found");
+          }
+        }
       }
     } else {
+      // New task
       setFormData({
         id: "",
         title: "",
@@ -108,8 +119,9 @@ export const TaskDetailsPage: FC = () => {
         status: "To Do",
         priority: "Medium",
       });
+      setError("");
     }
-  }, [id, getTask]);
+  }, [id, getTask, loading, tasks]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,97 +155,103 @@ export const TaskDetailsPage: FC = () => {
 
   return (
     <Layout title={isNewTask ? "New task" : "Edit task"}>
-      <FormContainer>
-        <form onSubmit={handleSubmit}>
-          <Field>
-            <TextField
-              dimension="m"
-              label="Title"
-              value={formData.title}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
-              required
-              style={{ width: "100%" }}
-              disabled={isSubmitting}
-            />
-          </Field>
+      {loading && id ? (
+        <FormContainer>
+          <p>Loading task...</p>
+        </FormContainer>
+      ) : (
+        <FormContainer>
+          <form onSubmit={handleSubmit}>
+            <Field>
+              <TextField
+                dimension="m"
+                label="Title"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+                required
+                style={{ width: "100%" }}
+                disabled={isSubmitting}
+              />
+            </Field>
 
-          <Field>
-            <TextField
-              dimension="m"
-              label="Description"
-              value={formData.description || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-              style={{ width: "100%" }}
-              rows={3}
-              disabled={isSubmitting}
-            />
-          </Field>
+            <Field>
+              <TextField
+                dimension="m"
+                label="Description"
+                value={formData.description || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+                style={{ width: "100%" }}
+                rows={3}
+                disabled={isSubmitting}
+              />
+            </Field>
 
-          <Field>
-            <FilterSelect
-              label="Category"
-              value={formData.category}
-              options={categoryOptions}
-              onChange={(value) =>
-                setFormData({
-                  ...formData,
-                  category: value as Task["category"],
-                })
-              }
-            />
-          </Field>
+            <Field>
+              <FilterSelect
+                label="Category"
+                value={formData.category}
+                options={categoryOptions}
+                onChange={(value) =>
+                  setFormData({
+                    ...formData,
+                    category: value as Task["category"],
+                  })
+                }
+              />
+            </Field>
 
-          <Field>
-            <FilterSelect
-              label="Status"
-              value={formData.status}
-              options={statusOptions}
-              onChange={(value) =>
-                setFormData({ ...formData, status: value as Task["status"] })
-              }
-            />
-          </Field>
+            <Field>
+              <FilterSelect
+                label="Status"
+                value={formData.status}
+                options={statusOptions}
+                onChange={(value) =>
+                  setFormData({ ...formData, status: value as Task["status"] })
+                }
+              />
+            </Field>
 
-          <Field>
-            <FilterSelect
-              label="Priority"
-              value={formData.priority}
-              options={priorityOptions}
-              onChange={(value) =>
-                setFormData({
-                  ...formData,
-                  priority: value as Task["priority"],
-                })
-              }
-            />
-          </Field>
+            <Field>
+              <FilterSelect
+                label="Priority"
+                value={formData.priority}
+                options={priorityOptions}
+                onChange={(value) =>
+                  setFormData({
+                    ...formData,
+                    priority: value as Task["priority"],
+                  })
+                }
+              />
+            </Field>
 
-          {error && (
-            <ErrorMessage font="Main/M" as="p">
-              {error}
-            </ErrorMessage>
-          )}
+            {error && (
+              <ErrorMessage font="Main/M" as="p">
+                {error}
+              </ErrorMessage>
+            )}
 
-          <ButtonGroup>
-            <Button
-              dimension="m"
-              appearance="secondary"
-              type="button"
-              onClick={() => navigate("/")}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button dimension="m" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : isNewTask ? "Create" : "Save"}
-            </Button>
-          </ButtonGroup>
-        </form>
-      </FormContainer>
+            <ButtonGroup>
+              <Button
+                dimension="m"
+                appearance="secondary"
+                type="button"
+                onClick={() => navigate("/")}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button dimension="m" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Saving..." : isNewTask ? "Create" : "Save"}
+              </Button>
+            </ButtonGroup>
+          </form>
+        </FormContainer>
+      )}
     </Layout>
   );
 };

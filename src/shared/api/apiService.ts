@@ -1,7 +1,6 @@
 import type { Task } from "../types/task";
 import { SupabaseService } from "./supabaseService";
 
-// Упрощенный API сервис - теперь только Supabase
 export class ApiService {
   static async getTasks(): Promise<Task[]> {
     return SupabaseService.getTasks();
