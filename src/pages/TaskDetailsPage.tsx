@@ -79,6 +79,7 @@ export const TaskDetailsPage: FC = () => {
   const navigate = useNavigate();
   const { getTask, updateTask, createTask } = useTaskContext();
   const [error, setError] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const isNewTask = !id;
 
   const [formData, setFormData] = useState<Task>({
@@ -99,7 +100,6 @@ export const TaskDetailsPage: FC = () => {
         setError("Task not found");
       }
     } else {
-      // Reset form for new task
       setFormData({
         id: "",
         title: "",
@@ -111,26 +111,34 @@ export const TaskDetailsPage: FC = () => {
     }
   }, [id, getTask]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
 
     if (!formData.title.trim()) {
       setError("Title is required");
       return;
     }
 
-    if (isNewTask) {
-      createTask({
-        title: formData.title,
-        description: formData.description,
-        category: formData.category,
-        status: formData.status,
-        priority: formData.priority,
-      });
-    } else {
-      updateTask(formData);
+    setIsSubmitting(true);
+    try {
+      if (isNewTask) {
+        await createTask({
+          title: formData.title,
+          description: formData.description,
+          category: formData.category,
+          status: formData.status,
+          priority: formData.priority,
+        });
+      } else {
+        await updateTask(formData);
+      }
+      navigate("/");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsSubmitting(false);
     }
-    navigate("/");
   };
 
   return (
@@ -147,6 +155,7 @@ export const TaskDetailsPage: FC = () => {
               }
               required
               style={{ width: "100%" }}
+              disabled={isSubmitting}
             />
           </Field>
 
@@ -160,6 +169,7 @@ export const TaskDetailsPage: FC = () => {
               }
               style={{ width: "100%" }}
               rows={3}
+              disabled={isSubmitting}
             />
           </Field>
 
@@ -214,11 +224,12 @@ export const TaskDetailsPage: FC = () => {
               appearance="secondary"
               type="button"
               onClick={() => navigate("/")}
+              disabled={isSubmitting}
             >
               Cancel
             </Button>
-            <Button dimension="m" type="submit">
-              {isNewTask ? "Create" : "Save"}
+            <Button dimension="m" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : isNewTask ? "Create" : "Save"}
             </Button>
           </ButtonGroup>
         </form>

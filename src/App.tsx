@@ -3,6 +3,7 @@ import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { TasksPage, TaskDetailsPage } from "./pages";
 import { LIGHT_THEME } from "@admiral-ds/react-ui";
 import { TaskProvider } from "./context";
+import { ApiInfo } from "./components/ApiInfo";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/task/new" element={<TaskDetailsPage />} />
             <Route path="/task/:id" element={<TaskDetailsPage />} />
           </Routes>
+          <ApiInfo />
         </Router>
       </TaskProvider>
     </ThemeProvider>

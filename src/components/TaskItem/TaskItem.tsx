@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Button } from "@admiral-ds/react-ui";
@@ -114,21 +115,32 @@ const getStatusColor = (status: Task["status"]) => {
 export const TaskItem: FC<TaskItemProps> = ({ task }) => {
   const navigate = useNavigate();
   const { deleteTask } = useTaskContext();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     navigate(`/task/${task.id}`);
   };
 
-  const handleDelete = (e: React.MouseEvent) => {
+  const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (window.confirm("Are you sure you want to delete this task?")) {
-      deleteTask(task.id);
+      setIsDeleting(true);
+      try {
+        await deleteTask(task.id);
+      } catch (error) {
+        console.error("Error deleting task:", error);
+        alert("Failed to delete task. Please try again.");
+      } finally {
+        setIsDeleting(false);
+      }
     }
   };
 
   const handleCardClick = () => {
-    navigate(`/task/${task.id}`);
+    if (!isDeleting) {
+      navigate(`/task/${task.id}`);
+    }
   };
 
   return (
@@ -148,11 +160,21 @@ export const TaskItem: FC<TaskItemProps> = ({ task }) => {
           </CustomTag>
         </TagsContainer>
         <ButtonContainer>
-          <Button dimension="m" appearance="secondary" onClick={handleEdit}>
+          <Button
+            dimension="m"
+            appearance="secondary"
+            onClick={handleEdit}
+            disabled={isDeleting}
+          >
             Edit
           </Button>
-          <Button dimension="m" appearance="primary" onClick={handleDelete}>
-            Delete
+          <Button
+            dimension="m"
+            appearance="primary"
+            onClick={handleDelete}
+            disabled={isDeleting}
+          >
+            {isDeleting ? "Deleting..." : "Delete"}
           </Button>
         </ButtonContainer>
       </CardContent>
