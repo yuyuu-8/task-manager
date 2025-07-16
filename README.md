@@ -1,4 +1,4 @@
-# Task Manager
+# Task Manager - [deploy](https://yuyuu-8.github.io/task-manager)
 
 A simple and intuitive task management application built with React and TypeScript. The application allows users to manage and filter tasks by different criteria such as status, category, and priority.
 
