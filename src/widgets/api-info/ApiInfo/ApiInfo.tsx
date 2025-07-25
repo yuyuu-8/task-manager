@@ -50,9 +50,9 @@ export const ApiInfo: FC = () => {
     <ApiInfoContainer>
       <ApiRow>
         <StatusDot $active={true} />
-        <T font="Caption/Caption 1">API: Supabase</T>
+        <T font="Caption/Caption 1">API: Express</T>
       </ApiRow>
-      <T font="Caption/Caption 2">Real PostgreSQL database</T>
+      <T font="Caption/Caption 2">In-memory data storage</T>
     </ApiInfoContainer>
   );
 };

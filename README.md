@@ -1,6 +1,11 @@
-# Task Manager - [deploy](yuyuu-8.github.io/task-manager)
+# Task Manager - Frontend
 
-A simple and intuitive task management application built with React and TypeScript, using Supabase as a backend. The application allows users to create, view, update, and delete tasks, as well as filter them by status, category, and priority.
+This is the frontend for the Task Manager application, built with React and TypeScript. It provides a user-friendly interface for managing tasks.
+
+**[View the deployed application here](https://yuyuu-8.github.io/task-manager/)**
+
+This project is connected to a separate backend server. You can find the repository for the server here:
+**[Task Manager Server Repository](https://github.com/yuyuu-8/task-manager-server)**
 
 ## Features
 
@@ -22,7 +27,7 @@ A simple and intuitive task management application built with React and TypeScri
 - **UI Components:** Admiral Design System
 - **Styling:** styled-components
 - **Routing:** React Router
-- **Backend:** Supabase (for database and API)
+- **Backend Communication:** Fetch API to interact with the [Express REST API](https://github.com/yuyuu-8/task-manager-server).
 - **State Management:** React Context API
 - **Linting & Formatting:** ESLint, Prettier
 
@@ -50,6 +55,8 @@ This structure ensures a clear separation of concerns and makes the codebase eas
 
 ## Getting Started
 
+To run this project, you need to have both the frontend and the [backend server](https://github.com/yuyuu-8/task-manager-server) running.
+
 ### Prerequisites
 
 - Node.js (version 18 or higher recommended)
@@ -57,44 +64,32 @@ This structure ensures a clear separation of concerns and makes the codebase eas
 
 ### Installation & Setup
 
-1. Clone the repository:
+1. **Clone the frontend repository:**
 
    ```bash
    git clone https://github.com/yuyuu-8/task-manager.git
    cd task-manager
    ```
 
-2. Install dependencies:
+2. **Install dependencies:**
 
    ```bash
    npm install
    ```
 
-3. Set up environment variables:
+3. **Clone and run the backend server:**
 
-   Create a `.env` file in the root of the project by copying the example file:
-
-   ```bash
-   copy .env.example .env
-   ```
-
-   You do not need to change the variables inside `.env` to run the project, as it is pre-configured with a public Supabase instance for demonstration purposes.
-
-   ```bash
-   # .env
-   VITE_SUPABASE_URL=https://lgjgzzxlebipwlhaoegi.supabase.co
-   VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxnamd6enhsZWJpcHdsaGFvZWdpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NjUxMjcsImV4cCI6MjA2ODI0MTEyN30.0sA0FdmTq-yx2WTqgaKrOxkBupvw4BaNG_dBB16qdAY
-   ```
+   Follow the instructions in the [server's README](https://github.com/yuyuu-8/task-manager-server/blob/main/README.md) to get it running. By default, it runs on `http://localhost:3001`.
 
 ### Running the Project
 
-1. Start the development server:
+1. **Start the frontend development server:**
 
    ```bash
    npm run dev
    ```
 
-2. Open your browser and navigate to `http://localhost:5173` (or the address shown in your terminal).
+2. **Open your browser** and navigate to `http://localhost:5173` (or the address shown in your terminal).
 
 ### Other Commands
 
